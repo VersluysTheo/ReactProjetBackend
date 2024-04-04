@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 
 namespace reactBackend.Service
 {
+
+    public class SecuritySettings
+    {
+        public string JwtKey { get; set; }
+    }
     public class UserService
     {
         private readonly User _context;
