@@ -16,21 +16,21 @@ namespace reactBackend.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly User _context;
+        private readonly UserDB _context;
 
-        public UserController(User context)
+        public UserController(UserDB context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDB>>> GetUsers()
         {
-            return await _context.User.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserDB>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -43,16 +43,16 @@ namespace reactBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<UserDB>> PostUser(UserDB user)
         {
-            _context.User.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserDB user)
         {
             if (id != user.UserId)
             {
@@ -102,7 +102,7 @@ namespace reactBackend.Controllers
 
         // Méthode d'authentification
         [HttpPost("authenticate")]
-        public async Task<ActionResult<dynamic>> Authenticate(User user)
+        public async Task<ActionResult<dynamic>> Authenticate(UserDB user)
         {
             var authUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == user.Name && u.Password == user.Password);
 
@@ -120,7 +120,7 @@ namespace reactBackend.Controllers
             };
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(UserDB user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("Your_Secret_Key");

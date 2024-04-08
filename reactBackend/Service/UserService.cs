@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using reactBackend.Models;
 using System;
+using System.IO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -10,23 +11,23 @@ using System.Threading.Tasks;
 
 namespace reactBackend.Service
 {
-
     public class SecuritySettings
     {
         public string JwtKey { get; set; }
     }
+
     public class UserService
     {
-        private readonly User _context;
+        private readonly UserDB _context; 
         private readonly string _jwtKey;
 
-        public UserService(User context, IOptions<SecuritySettings> securitySettings)
+        public UserService(UserDB context, IOptions<SecuritySettings> securitySettings)
         {
             _context = context;
             _jwtKey = securitySettings.Value.JwtKey;
         }
 
-        public async Task<(string?, User?)> Authenticate(string email, string password)
+        public async Task<(string?, UserDB?)> Authenticate(string email, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
 
@@ -38,7 +39,7 @@ namespace reactBackend.Service
             return (token, user);
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(UserDB user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtKey);
@@ -47,7 +48,7 @@ namespace reactBackend.Service
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email)
                 }),
@@ -57,6 +58,18 @@ namespace reactBackend.Service
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public void ReadFile(string filePath)
+        {
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    Console.WriteLine(line);
+                }
+            }
         }
     }
 }

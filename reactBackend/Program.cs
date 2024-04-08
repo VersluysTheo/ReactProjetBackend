@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System.Text;
 using Microsoft.Extensions.FileProviders;
+using reactBackend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<User>(options =>
+builder.Services.AddDbContext<UserDB>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
