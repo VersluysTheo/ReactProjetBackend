@@ -18,7 +18,7 @@ namespace reactBackend.Service
 
     public class UserService
     {
-        private readonly UserDB _context; 
+        private readonly UserDB _context;
         private readonly string _jwtKey;
 
         public UserService(UserDB context, IOptions<SecuritySettings> securitySettings)

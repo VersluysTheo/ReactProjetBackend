@@ -12,7 +12,7 @@
         public int? SurfaceHabitable { get; set; }
         public int? SurfaceTotale { get;set; }
 
-        public string? TestPhotos { get; set; } // Test pour ajouter les images du bien
+        public string? TestPhotos { get; set; } // Test pour ajouter les images du bien ( chemin vers les fichiers )
 
     }
 }

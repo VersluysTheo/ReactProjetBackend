@@ -8,11 +8,18 @@ using Microsoft.Extensions.Hosting;
 using System.Text;
 using Microsoft.Extensions.FileProviders;
 using reactBackend.Models;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+var connectionString = configuration.GetConnectionString("PostgreSQLConnection");
 builder.Services.AddDbContext<UserDB>(options =>
     options.UseNpgsql(connectionString));
 
