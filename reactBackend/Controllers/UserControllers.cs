@@ -19,7 +19,7 @@ namespace reactBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDB>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<object>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
             var userInfos = users.Select(u => new {
