@@ -27,6 +27,11 @@ namespace reactBackend.Service
             _jwtKey = securitySettings.Value.JwtKey;
         }
 
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
 
         public async Task<(string?, UserDbContext?)> Authenticate(string email, string password)
         {
