@@ -20,7 +20,7 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 var connectionString = configuration.GetConnectionString("PostgreSQLConnection");
-builder.Services.AddDbContext<UserDB>(options =>
+builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();

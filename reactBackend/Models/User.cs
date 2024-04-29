@@ -3,18 +3,21 @@ using Microsoft.Extensions.Configuration;
 
 namespace reactBackend.Models
 {
-    public class UserDB : DbContext
+    public class User
     {
-
-        public UserDB(DbContextOptions<UserDB> options) : base(options)
-        {
-        }
-
-        public DbSet<UserDB> Users { get; set; }
-
         public int UserId { get; set; }
         public string? Name { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
+    }
+
+    public class UserDbContext : DbContext
+    {
+
+        public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<User> Users { get; set; }
     }
 }

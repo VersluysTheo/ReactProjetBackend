@@ -18,16 +18,17 @@ namespace reactBackend.Service
 
     public class UserService
     {
-        private readonly UserDB _context;
+        private readonly UserDbContext _context;
         private readonly string _jwtKey;
 
-        public UserService(UserDB context, IOptions<SecuritySettings> securitySettings)
+        public UserService(UserDbContext context, IOptions<SecuritySettings> securitySettings)
         {
             _context = context;
             _jwtKey = securitySettings.Value.JwtKey;
         }
 
-        public async Task<(string?, UserDB?)> Authenticate(string email, string password)
+
+        public async Task<(string?, UserDbContext?)> Authenticate(string email, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
 
@@ -36,10 +37,10 @@ namespace reactBackend.Service
 
             var token = GenerateJwtToken(user);
 
-            return (token, user);
+            return (token, _context);
         }
 
-        private string GenerateJwtToken(UserDB user)
+        private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtKey);

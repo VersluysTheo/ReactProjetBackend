@@ -11,28 +11,22 @@ namespace reactBackend.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserDB _context;
+        private readonly UserDbContext _context;
 
-        public UserController(UserDB context)
+        public UserController(UserDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDbContext>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
-            var userInfos = users.Select(u => new {
-                u.UserId,
-                u.Name,
-                u.Email,
-                u.Password
-            });
-            return Ok(userInfos);
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDB>> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -45,7 +39,7 @@ namespace reactBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDB>> PostUser(UserDB user)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -54,7 +48,7 @@ namespace reactBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, UserDB user)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.UserId)
             {
