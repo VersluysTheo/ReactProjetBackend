@@ -19,7 +19,7 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 
-var connectionString = configuration.GetConnectionString("PostgreSQLConnection");
+var connectionString = configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseNpgsql(connectionString));
 
