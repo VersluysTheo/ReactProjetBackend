@@ -55,8 +55,10 @@ namespace reactBackend.Service
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.Name, user.FirstName),
+                    new Claim(ClaimTypes.Name, user.LastName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
